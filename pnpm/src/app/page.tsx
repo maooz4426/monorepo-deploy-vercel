@@ -3,6 +3,6 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div>Deploy by pnpm test</div>
+    <div>Deploy by pnpm test2</div>
   );
 }

@@ -1,0 +1,30 @@
+name: deploy-stg.yml
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+        run:
+          working-directory: ./pnpm
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: '20'
+        - uses: pnpm/action-setup@v4
+          name: Install pnpm
+          with:
+            version: 10
+            run_install: true
+        - name: Install vercel CLI
+          run: pnpm install -g vercel
+        - name: Build Project Artifacts
+          run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        - name: Deploy Project Artifacts to Vercel
+          run: vercel deploy --prebuild --target=preview --token=${{ secrets.VERCEL_TOKEN }}
