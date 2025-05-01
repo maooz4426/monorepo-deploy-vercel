@@ -38,7 +38,7 @@ jobs:
           run: |
             output=$(vercel --token $VERCEL_TOKEN)
             echo "$output"
-            echo "{url}={$output}" >> $GITHUB_OUTPUT
+            echo "url=$output" >> $GITHUB_OUTPUT
         - name: Use Preview URL
           run: |
             echo "The Vercel preview URL is ${{ steps.vercel_deploy.outputs.url }}"
