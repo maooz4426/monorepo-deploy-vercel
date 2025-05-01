@@ -25,6 +25,15 @@ jobs:
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy to Vercel (production)
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Vercel (preview)
+        id: vercel_deploy
+        env:
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+              output=$(vercel --token $VERCEL_TOKEN)
+              echo "$output"
+              echo "url=$output" >> $GITHUB_OUTPUT
+      - name: set Vercel Alias
+        run: |
+            vercel alias set ${{ steps.vercel_deploy.outputs.url }} monorepo-deploy-vercel.vercel.app --token=${{ secrets.VERCEL_TOKEN }}
 
