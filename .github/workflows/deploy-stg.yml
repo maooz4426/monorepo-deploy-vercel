@@ -38,7 +38,7 @@ jobs:
           run: |
             output=$(vercel --token $VERCEL_TOKEN)
             echo "$output"
-            preview_url=$(echo "$output" | grep -oP '(?<=Preview: )\S+')
+            preview_url=$(echo "$output" | grep -oP '(?<=Preview: )\S+' || true)
             echo "Extracted preview_url: $preview_url"
             echo "preview_url=$preview_url" >> $GITHUB_OUTPUT
 
