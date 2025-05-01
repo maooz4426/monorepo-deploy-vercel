@@ -39,7 +39,7 @@ jobs:
             output=$(vercel --token $VERCEL_TOKEN)
             echo "$output"
             echo "url=$output" >> $GITHUB_OUTPUT
-        - name: Use Preview URL
+        - name: set Vercel Alias
           run: |
             vercel alias set ${{ steps.vercel_deploy.outputs.url }} stg-monorepo-deploy-vercel.vercel.app --token=${{ secrets.VERCEL_TOKEN }}
           
