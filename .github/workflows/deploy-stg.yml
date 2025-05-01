@@ -34,8 +34,12 @@ jobs:
         - name: Deploy Project Artifacts to Vercel
           id: vercel-deploy
           run: |
-            output=$(vercel deploy --target=preview --token=${{ secrets.VERCEL_TOKEN }})
-            echo "::set-output name=preview_url::$(echo $output | grep -o 'https://[^ ]*')"
-            echo $preview_url
+            OUTPUT=$(vercel deploy --target=preview --token=${{ secrets.VERCEL_TOKEN }})
+            PREVIEW_URL=$(echo "$OUTPUT" | grep "Preview:" | awk '{print $2}')
+            echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+            echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
         - name: Set ailias for staging
-          run: vercel alias set https://stg-monorepo-deploy-vercel.vercel.app　--token=${{ secrets.VERCEL_TOKEN }}
+          run: |
+            echo "デプロイされたURL: ${{ steps.vercel-deploy.outputs.preview_url }}"
+#          vercel alias set https://stg-monorepo-deploy-vercel.vercel.app　--token=${{ secrets.VERCEL_TOKEN }}
+          
