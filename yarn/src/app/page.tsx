@@ -3,6 +3,6 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div>deploy by yarn</div>
+    <div>deploy by yarn test</div>
   );
 }

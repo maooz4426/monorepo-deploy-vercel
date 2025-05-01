@@ -1,0 +1,45 @@
+name: deploy-stg.yml
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+        run:
+          working-directory: ./pnpm
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: '20'
+        - uses: pnpm/action-setup@v4
+          name: Install pnpm
+          with:
+            version: 10
+            run_install: true
+        - name: Install vercel CLI
+          run: pnpm install -g vercel
+        - name: Pull Vercel Environment Information
+          run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        - name: Build Project Artifacts
+          run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        - name: Deploy to Vercel (preview)
+          id: vercel_deploy
+          env:
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          run: |
+            output=$(vercel --token $VERCEL_TOKEN)
+            echo "$output"
+            echo "url=$output" >> $GITHUB_OUTPUT
+        - name: set Vercel Alias
+          run: |
+            vercel alias set ${{ steps.vercel_deploy.outputs.url }} stg-monorepo-deploy-vercel.vercel.app --token=${{ secrets.VERCEL_TOKEN }}
+          
