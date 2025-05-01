@@ -31,15 +31,18 @@ jobs:
           run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
         - name: Build Project Artifacts
           run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-        - name: Deploy Project Artifacts to Vercel
-          id: vercel-deploy
+        - name: Deploy to Vercel (preview)
+          id: vercel_deploy
+          env:
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           run: |
-            OUTPUT=$(vercel deploy --target=preview --token=${{ secrets.VERCEL_TOKEN }})
-            PREVIEW_URL=$(echo "$OUTPUT" | grep "Preview:" | awk '{print $2}')
-            echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
-            echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
-        - name: Set ailias for staging
+            output=$(vercel --token $VERCEL_TOKEN)
+            echo "$output"
+            preview_url=$(echo "$output" | grep -oP '(?<=Preview: )\S+')
+            echo "Extracted preview_url: $preview_url"
+            echo "preview_url=$preview_url" >> $GITHUB_OUTPUT
+
+        - name: Use Preview URL
           run: |
-            echo "デプロイされたURL: ${{ steps.vercel-deploy.outputs.preview_url }}"
-#          vercel alias set https://stg-monorepo-deploy-vercel.vercel.app　--token=${{ secrets.VERCEL_TOKEN }}
+            echo "The Vercel preview URL is ${{ steps.vercel_deploy.outputs.preview_url }}"
           
