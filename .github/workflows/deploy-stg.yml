@@ -34,7 +34,7 @@ jobs:
         - name: Deploy Project Artifacts to Vercel
           id: vercel-deploy
           run: |
-            output = vercel deploy --target=preview --token=${{ secrets.VERCEL_TOKEN }}
+            output=$(vercel deploy --target=preview --token=${{ secrets.VERCEL_TOKEN }})
             echo "::set-output name=preview_url::$(echo $output | grep -o 'https://[^ ]*')"
             echo $preview_url
         - name: Set ailias for staging
