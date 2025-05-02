@@ -30,22 +30,22 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ fromJson(env.ENV_JSON).DIRECTORY }}
+        working-directory: ${{ toJson(env.ENV_JSON).DIRECTORY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: ${{ fromJson(env.ENV_JSON).DIRECTORY }}/package.json
+          node-version-file: ${{ toJson(env.ENV_JSON).DIRECTORY }}/package.json
       - name: Install pnpm
-        if: ${{ fromJson(env.ENV_JSON).DIRECTORY == './pnpm' }}
+        if: ${{ toJson(env.ENV_JSON).DIRECTORY == './pnpm' }}
         uses: pnpm/action-setup@v4
         with:
           version: 10
           run_install: false
       - name: Install dependencies
-        run: ${{ fromJson(env.ENV_JSON).PM }} install
+        run: ${{ toJson(env.ENV_JSON).PM }} install
       - name: Install vercel CLI
         run: ｜
           if [ -f yarn.lock ]; then
@@ -54,7 +54,7 @@ jobs:
             pnpm add -g vercel
           fi
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=${{ fromJson(env.ENV_JSON).VERCEL_ENV }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=${{ toJson(env.ENV_JSON).VERCEL_ENV }} --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy to Vercel
@@ -67,6 +67,6 @@ jobs:
           echo "url=$output" >> $GITHUB_OUTPUT
       - name: set Vercel Alias
         run: |
-          vercel alias set ${{ steps.vercel_deploy.outputs.url }} ${{ fromJson(env.ENV_JSON).VERCEL_URL }} --token=${{ secrets.VERCEL_TOKEN }}
+          vercel alias set ${{ steps.vercel_deploy.outputs.url }} ${{ toJson(env.ENV_JSON).VERCEL_URL }} --token=${{ secrets.VERCEL_TOKEN }}
 
 
