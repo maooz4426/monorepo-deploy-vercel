@@ -10,14 +10,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    name: Use workflows
+    uses: ./.github/workflows/deploy-for-vercel.yml
+    with:
+      environment: staging
 #    defaults:
 #        run:
 #          working-directory: ./pnpm
-    steps:
-        - name: use workflows
-          uses: ./.github/workflows/deploy-for-vercel.yml
-          with:
-            environment: staging
+
 #        - name: Checkout code
 #          uses: actions/checkout@v2
 #        - name: Set up Node.js
