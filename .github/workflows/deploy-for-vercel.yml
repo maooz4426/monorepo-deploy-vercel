@@ -62,7 +62,7 @@ jobs:
       - name: Install dependencies
         run: ${{ fromJson(env.ENV_JSON).PM }} install
       - name: Install vercel CLI
-        run: ｜
+        run: |
           if [ -f yarn.lock ]; then
             yarn global add vercel
           elif [ -f pnpm-lock.yaml ]; then
