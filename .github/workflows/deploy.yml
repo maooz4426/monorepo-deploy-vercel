@@ -11,29 +11,33 @@ jobs:
       run:
         working-directory: ./yarn
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: use workflows
+        uses: ./.github/workflows/deploy-for-vercel.yml
         with:
-          node-version: '20'
-      - name: Install dependencies
-        run: yarn install
-      - name: install vercel CLI
-        run: yarn global add vercel
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy to Vercel (production)
-        id: vercel_deploy
-        env:
-            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: |
-              output=$(vercel --token $VERCEL_TOKEN)
-              echo "$output"
-              echo "url=$output" >> $GITHUB_OUTPUT
-      - name: set Vercel Alias
-        run: |
-            vercel alias set ${{ steps.vercel_deploy.outputs.url }} monorepo-deploy-vercel.vercel.app --token=${{ secrets.VERCEL_TOKEN }}
+          environment: production
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '20'
+#      - name: Install dependencies
+#        run: yarn install
+#      - name: install vercel CLI
+#        run: yarn global add vercel
+#      - name: Pull Vercel Environment Information
+#        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+#      - name: Build Project Artifacts
+#        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+#      - name: Deploy to Vercel (production)
+#        id: vercel_deploy
+#        env:
+#            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+#        run: |
+#              output=$(vercel --token $VERCEL_TOKEN)
+#              echo "$output"
+#              echo "url=$output" >> $GITHUB_OUTPUT
+#      - name: set Vercel Alias
+#        run: |
+#            vercel alias set ${{ steps.vercel_deploy.outputs.url }} monorepo-deploy-vercel.vercel.app --token=${{ secrets.VERCEL_TOKEN }}
 
