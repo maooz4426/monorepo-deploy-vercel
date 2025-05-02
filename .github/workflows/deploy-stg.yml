@@ -9,8 +9,6 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    name: Use workflows
     uses: ./.github/workflows/deploy-for-vercel.yml
     with:
       environment: staging
