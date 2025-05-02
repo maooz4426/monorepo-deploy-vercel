@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: use workflows
         uses: ./.github/workflows/deploy-for-vercel.yml
+        secrets: inherit
         with:
           environment: production
 #      - name: Checkout code
