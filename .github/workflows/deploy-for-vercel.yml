@@ -12,16 +12,16 @@ env:
     ${{ 
       fromJson('{
         "staging":{
-          "PM": "pnpm",
-          "DIRECTORY": "./pnpm",
-          "VERCEL_ENV": "preview",
-          "VERCEL_URL": "stg-monorepo-deploy-vercel.vercel.app"
+          "PM": pnpm,
+          "DIRECTORY": ./pnpm,
+          "VERCEL_ENV": preview,
+          "VERCEL_URL": stg-monorepo-deploy-vercel.vercel.app
         },
         "production":{
-          "PM": "yarn",
-          "DIRECTORY": "./yarn",
-          "VERCEL_ENV": "production",
-          "VERCEL_URL": "monorepo-deploy-vercel.vercel.app"
+          "PM": yarn,
+          "DIRECTORY": ./yarn,
+          "VERCEL_ENV": production,
+          "VERCEL_URL": monorepo-deploy-vercel.vercel.app
         }
       }')[inputs.environment]
     }}
