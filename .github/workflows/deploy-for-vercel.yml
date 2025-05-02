@@ -80,7 +80,7 @@ jobs:
           output=$(vercel --token $VERCEL_TOKEN)
           echo "$output"
           echo "url=$output" >> $GITHUB_OUTPUT
-      - name: set Vercel Alias
+      - name: Set Vercel Alias
         run: |
           vercel alias set ${{ steps.vercel_deploy.outputs.url }} ${{ fromJson(env.ENV_JSON).VERCEL_URL }} --token=${{ secrets.VERCEL_TOKEN }}
 
