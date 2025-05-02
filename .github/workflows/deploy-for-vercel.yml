@@ -9,8 +9,8 @@ env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   ENV_JSON: |
-    ${{ 
-      toJson('{
+    ${{ toJson( 
+      fromJson('{
         "staging":{
           "PM": "pnpm",
           "DIRECTORY": "./pnpm",
@@ -23,8 +23,23 @@ env:
           "VERCEL_ENV": "production",
           "VERCEL_URL": "monorepo-deploy-vercel.vercel.app"
         }
-      }')[inputs.environment]
-    }}
+      }')[inputs.environment]) }}
+#    ${{fromJson(
+#      toJson('{
+#        "staging":{
+#          "PM": "pnpm",
+#          "DIRECTORY": "./pnpm",
+#          "VERCEL_ENV": "preview",
+#          "VERCEL_URL": "stg-monorepo-deploy-vercel.vercel.app"
+#        },
+#        "production":{
+#          "PM": "yarn",
+#          "DIRECTORY": "./yarn",
+#          "VERCEL_ENV": "production",
+#          "VERCEL_URL": "monorepo-deploy-vercel.vercel.app"
+#        }
+#      }')[inputs.environment])
+#    }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
